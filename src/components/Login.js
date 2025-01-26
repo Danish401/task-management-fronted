@@ -51,19 +51,20 @@ const Login = () => {
       });
   };
 
+
+
   const handleGoogleLogin = () => {
-    const googleLoginUrl = "https://task-management-ib2z.onrender.com/auth/google";
-    const width = 500,
-      height = 600;
+        const googleLoginUrl = "https://task-management-ib2z.onrender.com/auth/google";
+    const width = 500, height = 600;
     const left = (window.innerWidth - width) / 2;
     const top = (window.innerHeight - height) / 2;
-
+  
     const googleLoginWindow = window.open(
       googleLoginUrl,
       "Google Login",
       `width=${width},height=${height},top=${top},left=${left}`
     );
-
+  
     const pollTimer = window.setInterval(() => {
       if (googleLoginWindow.closed) {
         window.clearInterval(pollTimer);
@@ -73,10 +74,7 @@ const Login = () => {
     window.addEventListener(
       "message",
       (event) => {
-        if (
-          event.origin === "https://task-management-ib2z.onrender.com" &&
-          event.data.user
-        ) {
+        if ( event.origin === "https://task-management-ib2z.onrender.com"  && event.data.user) {
           const { user, token } = event.data;
           console.log("User data:", user);
           dispatch(setUser({ user, token }));
@@ -88,7 +86,11 @@ const Login = () => {
       },
       false
     );
+    
   };
+  
+
+  
 
   return (
     <div className="max-w-sm mx-auto mt-10">
