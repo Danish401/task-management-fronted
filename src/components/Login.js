@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    const googleLoginUrl = "https://task-qcm8.onrender.com/auth/google";
+    const googleLoginUrl = "https://task-management-ib2z.onrender.com/auth/google";
     const width = 500,
       height = 600;
     const left = (window.innerWidth - width) / 2;
@@ -74,7 +74,7 @@ const Login = () => {
       "message",
       (event) => {
         if (
-          event.origin === "https://task-qcm8.onrender.com" &&
+          event.origin === "https://task-management-ib2z.onrender.com" &&
           event.data.user
         ) {
           const { user, token } = event.data;
