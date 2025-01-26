@@ -80,7 +80,7 @@ const Signup = () => {
   };
 
   const handleGoogleSignup = () => {
-    const googleLoginUrl ="https://task-qcm8.onrender.com/auth/google";
+    const googleLoginUrl ="https://task-management-ib2z.onrender.com/auth/google";
     const width = 500, height = 600;
     const left = (window.innerWidth - width) / 2;
     const top = (window.innerHeight - height) / 2;
@@ -100,7 +100,7 @@ const Signup = () => {
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin === "https://task-qcm8.onrender.com" && event.data.user) {
+        if (event.origin === "https://task-management-ib2z.onrender.com" && event.data.user) {
           const { user, token } = event.data;
           console.log("User data:", user);
           dispatch(setUser({ user, token }));
