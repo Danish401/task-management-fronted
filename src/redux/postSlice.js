@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { logoutUser } from "./authSlice";
 const API_BASE_URL = process.env.NODE_ENV === "production" 
-  ? "https://task-qcm8.onrender.com" 
+  ? "https://task-management-ib2z.onrender.com" 
   : "http://localhost:5000";
    
 
