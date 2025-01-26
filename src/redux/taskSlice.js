@@ -4,7 +4,7 @@ import { logoutUser } from "./authSlice"; // Import logout action if needed
 // Update the URL based on your backend
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://task-qcm8.onrender.com"
+    ? "https://task-management-ib2z.onrender.com"
     : "http://localhost:5000";
 
 // Async Thunks for API Calls
