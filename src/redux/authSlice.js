@@ -4,7 +4,7 @@ import {clearPostState} from "./postSlice"
 import { clearTaskState } from "./taskSlice";
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://task-qcm8.onrender.com"
+    ? "https://task-management-ib2z.onrender.com"
     : "http://localhost:5000";
 
 // Thunks for async API calls
