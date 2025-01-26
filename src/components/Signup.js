@@ -79,6 +79,7 @@ const Signup = () => {
       .catch((err) => toast.error(err));
   };
 
+
   const handleGoogleSignup = () => {
     const googleLoginUrl ="https://task-management-ib2z.onrender.com/auth/google";
     const width = 500, height = 600;
@@ -116,6 +117,8 @@ const Signup = () => {
   };
   
 
+  
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#f4f4f4]">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
