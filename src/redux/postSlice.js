@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { logoutUser } from "./authSlice";
 const API_BASE_URL = process.env.NODE_ENV === "production" 
-  ? "https://task-management-ib2z.onrender.com/" 
-  : "http://localhost:5000/";
+  ? "https://task-qcm8.onrender.com" 
+  : "http://localhost:5000";
    
 
 
@@ -19,7 +20,7 @@ export const createPost = createAsyncThunk(
         },
       };
       const response = await axios.post(
-        `${API_BASE_URL}api/posts/`,
+        `${API_BASE_URL}/api/posts/`,
         formData,
         config
       );
@@ -41,7 +42,7 @@ export const getPosts = createAsyncThunk(
           Authorization: `Bearer ${token}`, // Use token for authenticated requests
         },
       };
-      const response = await axios.get(`${API_BASE_URL}api/posts/`, config);
+      const response = await axios.get(`${API_BASE_URL}/api/posts/`, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");
@@ -60,7 +61,7 @@ export const getPostsByUserId = createAsyncThunk(
         },
       };
       const response = await axios.get(
-        `${API_BASE_URL}api/posts/${userId}`,
+        `${API_BASE_URL}/api/posts/${userId}`,
         config
       );
       return response.data;
@@ -81,7 +82,11 @@ const initialState = {
 const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {}, // Define additional reducers here if needed
+  reducers: { clearPostState: (state) => {
+    state.posts = [];
+    state.loading = false;
+    state.error = null;
+  },}, // Define additional reducers here if needed
   extraReducers: (builder) => {
     // Create post
     builder
@@ -123,8 +128,13 @@ const postSlice = createSlice({
       .addCase(getPostsByUserId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      }).addCase(logoutUser.fulfilled, (state) => {
+        // Clear post-related state when logging out
+        state.posts = [];
+        state.loading = false;
+        state.error = null;
       });
   },
 });
-
+export const { clearPostState } = postSlice.actions;
 export default postSlice.reducer;

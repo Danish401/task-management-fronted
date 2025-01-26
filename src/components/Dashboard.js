@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, setUser } from "../redux/authSlice";
+import { logout, setUser,logoutUser } from "../redux/authSlice";
 import { toast } from "react-toastify";
 import { Box, IconButton } from "@mui/material";
 import { FaBars } from "react-icons/fa";
@@ -44,7 +44,7 @@ export default function Dashboard() {
   }, [token, user]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     toast.success("Logged out successfully!");
     navigate("/log-in");
   };

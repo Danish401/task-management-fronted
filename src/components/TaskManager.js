@@ -67,7 +67,19 @@ const TaskManager = () => {
     }
   }, [dispatch, userId, isAuthenticated]);
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    if (isAuthenticated) {
+      setOpen(true);
+    } else {
+      Swal.fire({
+        title: "Please Login",
+        text: "You need to be logged in to add tasks.",
+        icon: "warning",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#5B5BD6",
+      });
+    }
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -90,9 +102,6 @@ const TaskManager = () => {
     }
   };
 
-  // const handleDelete = (id) => {
-  //   dispatch(deleteTask(id));
-  // };
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -137,7 +146,6 @@ const TaskManager = () => {
           Add Task
         </Button>
       </Box>
-
       {/* Tasks Grid */}
       <Grid container spacing={3}>
         {tasks.length > 0 ? (

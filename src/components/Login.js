@@ -1,8 +1,6 @@
-
-
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser,setUser } from "../redux/authSlice";
+import { loginUser, setUser } from "../redux/authSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -53,40 +51,45 @@ const Login = () => {
       });
   };
 
-  const API_BASE_URL = process.env.NODE_ENV === "production" 
-  ? "https://task-management-ib2z.onrender.com/" 
-  : "http://localhost:5000/";
   const handleGoogleLogin = () => {
-     const googleLoginUrl =  `${API_BASE_URL}auth/google`;
-        const width = 500, height = 600;
-        const left = (window.innerWidth - width) / 2;
-        const top = (window.innerHeight - height) / 2;
-      
-        const googleLoginWindow = window.open(
-          googleLoginUrl,
-          "Google Login",
-          `width=${width},height=${height},top=${top},left=${left}`
-        );
-      
-        const pollTimer = window.setInterval(() => {
-          if (googleLoginWindow.closed) {
-            window.clearInterval(pollTimer);
-            console.log("Google signup window closed");
-          }
-        }, 500);
-      
-        window.addEventListener("message", (event) => {
-          if (event.origin === `${API_BASE_URL}` && event.data.user) {
-            const { user, token } = event.data;
-            console.log("User data:", user);
-            dispatch(setUser({ user, token }));
-            toast.success("Google signup successful!");
-            navigate("/");
-          } else {
-            toast.error("Google signup failed. Try again.");
-          }
-        }, false);
-  }
+    const googleLoginUrl = "https://task-qcm8.onrender.com/auth/google";
+    const width = 500,
+      height = 600;
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+
+    const googleLoginWindow = window.open(
+      googleLoginUrl,
+      "Google Login",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
+
+    const pollTimer = window.setInterval(() => {
+      if (googleLoginWindow.closed) {
+        window.clearInterval(pollTimer);
+        console.log("Google signup window closed");
+      }
+    }, 500);
+    window.addEventListener(
+      "message",
+      (event) => {
+        if (
+          event.origin === "https://task-qcm8.onrender.com" &&
+          event.data.user
+        ) {
+          const { user, token } = event.data;
+          console.log("User data:", user);
+          dispatch(setUser({ user, token }));
+          toast.success("Google signup successful!");
+          navigate("/");
+        } else {
+          console.warn("Message from unknown origin or invalid data");
+        }
+      },
+      false
+    );
+  };
+
   return (
     <div className="max-w-sm mx-auto mt-10">
       <h2 className="text-2xl font-bold text-center">Login</h2>
@@ -131,8 +134,6 @@ const Login = () => {
           Login with Google
         </button>
       </div>
-
-    
 
       {/* Signup Link */}
       <div className="flex justify-center mt-4 text-sm">

@@ -18,9 +18,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
-  const API_BASE_URL = process.env.NODE_ENV === "production" 
-  ? "https://task-management-ib2z.onrender.com/" 
-  : "http://localhost:5000/";
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -76,13 +74,13 @@ const Signup = () => {
       .unwrap()
       .then(() => {
         toast.success("Registration successful!");
-        navigate("/log-in");
+        navigate("/");
       })
       .catch((err) => toast.error(err));
   };
 
   const handleGoogleSignup = () => {
-    const googleLoginUrl = `${API_BASE_URL}auth/google`;
+    const googleLoginUrl ="https://task-qcm8.onrender.com/auth/google";
     const width = 500, height = 600;
     const left = (window.innerWidth - width) / 2;
     const top = (window.innerHeight - height) / 2;
@@ -99,18 +97,22 @@ const Signup = () => {
         console.log("Google signup window closed");
       }
     }, 500);
-  
-    window.addEventListener("message", (event) => {
-      if (event.origin === API_BASE_URL && event.data.user) {
-        const { user, token } = event.data;
-        console.log("User data:", user);
-        dispatch(setUser({ user, token }));
-        toast.success("Google signup successful!");
-        navigate("/");
-      } else {
-        toast.error("Google signup failed. Try again.");
-      }
-    }, false);
+    window.addEventListener(
+      "message",
+      (event) => {
+        if (event.origin === "https://task-qcm8.onrender.com" && event.data.user) {
+          const { user, token } = event.data;
+          console.log("User data:", user);
+          dispatch(setUser({ user, token }));
+          toast.success("Google signup successful!");
+          navigate("/");
+        } else {
+          console.warn("Message from unknown origin or invalid data");
+        }
+      },
+      false
+    );
+    
   };
   
 

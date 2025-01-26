@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { logoutUser } from "./authSlice"; // Import logout action if needed
 // Update the URL based on your backend
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://task-management-ib2z.onrender.com/"
-    : "http://localhost:5000/";
+    ? "https://task-qcm8.onrender.com"
+    : "http://localhost:5000";
 
 // Async Thunks for API Calls
 
@@ -14,7 +14,7 @@ export const fetchTasks = createAsyncThunk(
   "tasks/getAllTasks",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}api/tasks/`);
+      const response = await axios.get(`${API_BASE_URL}/api/tasks/`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -47,7 +47,7 @@ export const createTask = createAsyncThunk(
       const token = getState().auth.token || localStorage.getItem("token");
 
       const response = await axios.post(
-        `${API_BASE_URL}api/tasks/`,
+        `${API_BASE_URL}/api/tasks/`,
         {
           ...taskData,
           user: userId || undefined, // Include user ID if available
@@ -73,7 +73,7 @@ export const updateTaskStatus = createAsyncThunk(
   "tasks/updateTaskStatus",
   async ({ id, status }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${API_BASE_URL}api/tasks/${id}`, {
+      const response = await axios.put(`${API_BASE_URL}/api/tasks/${id}`, {
         status,
       });
       return response.data;
@@ -91,7 +91,7 @@ export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}api/tasks/${id}`);
+      const response = await axios.delete(`${API_BASE_URL}/api/tasks/${id}`);
       return { id, message: response.data.message };
     } catch (error) {
       return rejectWithValue(
@@ -107,7 +107,7 @@ export const fetchTaskById = createAsyncThunk(
   "tasks/getTaskById",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}api/tasks/${id}`);
+      const response = await axios.get(`${API_BASE_URL}/api/tasks/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -124,7 +124,7 @@ export const updateTaskDetails = createAsyncThunk(
   async ({ id, taskData }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}api/tasks/data/${id}`,
+        `${API_BASE_URL}/api/tasks/data/${id}`,
         taskData
       );
       return response.data;
@@ -145,7 +145,7 @@ export const fetchTasksByUserId = createAsyncThunk(
 
       // Include token in Authorization header
       const response = await axios.get(
-        `${API_BASE_URL}api/tasks/user/${userId}`,
+        `${API_BASE_URL}/api/tasks/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add the Bearer token to the request headers
@@ -172,7 +172,14 @@ const taskSlice = createSlice({
     error: null,
     selectedTask: null,
   },
-  reducers: {},
+  reducers: {
+    clearTaskState: (state) => {
+      state.tasks = [];
+      state.loading = false;
+      state.error = null;
+      state.selectedTask = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch tasks
@@ -282,8 +289,15 @@ const taskSlice = createSlice({
       .addCase(updateTaskDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        // Clear task-related state when logging out
+        state.tasks = [];
+        state.loading = false;
+        state.error = null;
+        state.selectedTask = null;
       });
   },
 });
-
+export const { clearTaskState } = taskSlice.actions;
 export default taskSlice.reducer;
