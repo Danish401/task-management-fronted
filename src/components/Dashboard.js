@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { logout, setUser,logoutUser } from "../redux/authSlice";
+import {  setUser,logoutUser } from "../redux/authSlice";
 import { toast } from "react-toastify";
 import { Box, IconButton } from "@mui/material";
 import { FaBars } from "react-icons/fa";
@@ -30,7 +30,7 @@ export default function Dashboard() {
 
   const getUser = async () => {
     try {
-      const { data } = await axios.get("https://task-manager-18p7.onrender.com/auth/login/success", {
+      const { data } = await axios.get("https://task-management-ib2z.onrender.com/auth/login/success", {
         withCredentials: true,
       });
       dispatch(setUser(data.user._json));
